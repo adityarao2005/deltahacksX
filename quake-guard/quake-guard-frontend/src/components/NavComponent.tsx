@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 function NavLink({
 	href,
@@ -7,8 +9,14 @@ function NavLink({
 	href: string;
 	children: React.ReactNode;
 }) {
+	const pathname = usePathname();
 	return (
-		<li>
+		<li
+			className={
+				"inline-block px-4 hover:text-blue-700" +
+				(pathname === href ? " font-bold" : "")
+			}
+		>
 			<Link href={href}>{children}</Link>
 		</li>
 	);
@@ -16,8 +24,14 @@ function NavLink({
 
 function Navbar(props: React.PropsWithChildren<{}>) {
 	return (
-		<nav>
-			<ul>{props.children}</ul>
+		<nav className='flex flex-column p-4 drop-shadow-md'>
+			<div className='font-bold'>
+				<Link href='/'>QuakeGuard</Link>
+			</div>
+			<div className='flex-1'></div>
+			<div>
+				<ul>{props.children}</ul>
+			</div>
 		</nav>
 	);
 }
