@@ -1,3 +1,4 @@
+import TypingAnimation from "@/components/TypingAnimation";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,12 +19,33 @@ export default function Home() {
 			<div className='mx-auto text-center '>
 				{/* Typing animation here */}
 				<div className='text-4xl font-bold text-white p-5'>
-					QuakeGuard
+					<TypingAnimation
+						data={[
+							"Chile",
+							"Spain",
+							"France",
+							"Phillipines",
+							"Singapourse",
+							"Turkey",
+							"Canada",
+							"US",
+							"Mexico",
+							"Bolivia",
+							"Venesuala",
+							"Somalia",
+							"Ethiopia",
+							"Egypt",
+							"Madagascar",
+						]}
+					/>
 				</div>
 				<div className='flex flex-row'>
-					<LinkButton href='/about'>Learn More</LinkButton>
-					<div className='flex-1'></div>
-					<LinkButton href='/tool'>Use Tool</LinkButton>
+					<div className='px-2'>
+						<LinkButton href='/about'>Learn More</LinkButton>
+					</div>
+					<div className='px-2'>
+						<LinkButton href='/tool'>Use Tool</LinkButton>
+					</div>
 				</div>
 			</div>
 			<div className='flex-1'></div>
