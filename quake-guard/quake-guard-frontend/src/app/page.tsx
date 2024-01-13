@@ -18,7 +18,7 @@ export default function Home() {
 			<div className='mx-auto text-center '>
 				{/* Typing animation here */}
 				<div className='text-4xl font-bold text-white p-5'>
-					QuakeGuard
+					Welcome to QuakeGuard
 				</div>
 				<div className='flex flex-row'>
 					<LinkButton href='/about'>Learn More</LinkButton>
@@ -30,3 +30,6 @@ export default function Home() {
 		</div>
 	);
 }
+
+
+
