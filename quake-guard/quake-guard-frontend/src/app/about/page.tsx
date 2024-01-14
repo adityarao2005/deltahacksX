@@ -8,13 +8,13 @@ export default function AboutPage() {
 				<h1 className='text-4xl font-bold text-gray-100 mb-4'>
 					Solution
 				</h1 > 
-				<p className = 'text-gray-100'>QuakeGuard relies on Earthquake API's, Pandas analysis and a machine learning model to accurately tell a user what is the chances that an earthquake will occur in their area, it's strength and the expected date it will happen. Why are we different? </p>
+				<p className = 'text-gray-100'>QuakeGuard relies on Earthquake APIs, Pandas analysis, and a machine learning model to accurately illustrate the odds of an earthquake occuring in the specified area, its strength, and the expected date that it will happen. Why are we different? </p>
 				<div>
 					<h1 className='text-3xl font-bold text-gray-100'>
 						AI and Machine Learning Powered
 					</h1>
 					<p className='text-gray-100'>
-						Uses AI and Machine Learning predicting earthquakes with higher accuracy, enabling timely and informed decisions by authorities and communities!
+						QuakeGuard uses AI and Machine Learning to predict earthquakes with higher accuracy, enabling timely and informed decisions by authorities and communities!
 					</p>
 				</div>
 				<div>
@@ -22,7 +22,7 @@ export default function AboutPage() {
 						Global Community & Support
 					</h1>
 					<p className='text-gray-100'>
-						Unlike traditional models, QuakeGuard involves an active amount of users to allocatively rationing resources to high-risk areas, helping the ones who most need it!
+						Unlike traditional models, QuakeGuard involves an active amount of users to allocatively rationing resources to high-risk areas, helping ones in need!
 					</p>
 					<h1 className='text-3xl font-bold text-gray-100'>
 						Hollistic Analysis
