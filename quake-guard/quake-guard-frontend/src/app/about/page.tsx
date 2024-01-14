@@ -46,7 +46,7 @@ export default function AboutPage() {
 						The Inspiration
 					</h1>
 					<p className='text-gray-100'>
-						Our insipiration for this project rose from the devestating earthquakes that struck Turkey recently. As environmental enthusiasts, we knew we wanted to help. Our goal was to make something new and exciting that combined elements we were familiar with such as Node.js, React and TailwindCSS, as well as elements we wanted to learn more about such as ML. And so began our journey to create an extraordinary hack that not only adresses a current problem but also paves the way for a brighter future. 
+						Our inspiration for this project rose from the devestating earthquakes that struck Turkey recently. As environmental enthusiasts, we knew we wanted to help. Our goal was to make something new and exciting that combined elements we were familiar with such as Node.js, React and TailwindCSS, as well as elements we wanted to learn more about such as ML. And so began our journey to create an extraordinary hack that not only adresses a current problem but also paves the way for a brighter future. 
 					</p>
 				</div>
 				<div className='bg-cover h-80 rounded-2xl bg-[url("/mockup3.jpg")] '></div>
