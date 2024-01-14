@@ -13,13 +13,11 @@ import pickle
 
 print("Starting Quake Guard Backend")
 
-# TODO: Create the Cloud in the first place
-
-# print("Read CSV")
+print("Read CSV")
 # save filepath to variable for easier access
-# quake_data_file = 'silver.csv'
+quake_data_file = 'silver.csv'
 # read the data and store data in DataFrame titled melbourne_data
-# quake_data = pd.read_csv(quake_data_file)
+quake_data = pd.read_csv(quake_data_file)
 
 # creates the ml model
 quake_model = pickle.load(open('finalized_model.sav', 'rb'))
@@ -61,58 +59,58 @@ def haversine_distance(mk1, mk2):
 
 
 # iterate over all the rows and get these values: number of earthquakes, average magnitude, average depth, highest magnitude, lowest magnitude
-# def get_earthquake_stats(address_lat, address_lng, predicted_magnitude):
-# 	# init num earthquakes
-# 	num_earthquakes = 0
-# 	# init average magnitude
-# 	avg_magnitude = 0
-# 	# init average depth
-# 	avg_depth = 0
-# 	# init highest magnitude
-# 	highest_magnitude = 0
-# 	# init lowest magnitude
-# 	lowest_magnitude = 100000
+def get_earthquake_stats(address_lat, address_lng, predicted_magnitude):
+	# init num earthquakes
+	num_earthquakes = 0
+	# init average magnitude
+	avg_magnitude = 0
+	# init average depth
+	avg_depth = 0
+	# init highest magnitude
+	highest_magnitude = 0
+	# init lowest magnitude
+	lowest_magnitude = 100000
 
-# 	# iterate over all the rows
-# 	for index, row in quake_data.iterrows():
-# 		# get latitude and longitude 
-# 		lat = row['latitude']
-# 		lng = row['longitude']
+	# iterate over all the rows
+	for index, row in quake_data.iterrows():
+		# get latitude and longitude 
+		lat = row['latitude']
+		lng = row['longitude']
 
-# 		# get distance between the two points
-# 		distance = haversine_distance((float(lat), float(lng)), (float(address_lat), float(address_lng)))
+		# get distance between the two points
+		distance = haversine_distance((float(lat), float(lng)), (float(address_lat), float(address_lng)))
 
-# 		if (distance > prediction_scales[predicted_magnitude]):
-# 			continue
+		if (distance > prediction_scales[predicted_magnitude]):
+			continue
 
-# 		# increment num earthquakes
-# 		num_earthquakes += 1
-# 		# add magnitude to avg magnitude
-# 		avg_magnitude += row['mag']
-# 		# add depth to avg depth
-# 		avg_depth += row['depth']
-# 		# check if highest magnitude
-# 		if (row['mag'] > highest_magnitude):
-# 			highest_magnitude = row['mag']
-# 		# check if lowest magnitude
-# 		if (row['mag'] < lowest_magnitude):
-# 			lowest_magnitude = row['mag']
+		# increment num earthquakes
+		num_earthquakes += 1
+		# add magnitude to avg magnitude
+		avg_magnitude += row['mag']
+		# add depth to avg depth
+		avg_depth += row['depth']
+		# check if highest magnitude
+		if (row['mag'] > highest_magnitude):
+			highest_magnitude = row['mag']
+		# check if lowest magnitude
+		if (row['mag'] < lowest_magnitude):
+			lowest_magnitude = row['mag']
 	
-# 	data = {}
-# 	if (num_earthquakes != 0):
-# 		data['num_earthquakes'] = num_earthquakes
-# 		data['avg_magnitude'] = avg_magnitude / num_earthquakes
-# 		data['avg_depth'] = avg_depth / num_earthquakes
-# 		data['highest_magnitude'] = highest_magnitude
-# 		data['lowest_magnitude'] = lowest_magnitude
-# 	else:
-# 		data['num_earthquakes'] = 0
-# 		data['avg_magnitude'] = 0
-# 		data['avg_depth'] = 0
-# 		data['highest_magnitude'] = 0
-# 		data['lowest_magnitude'] = 0
+	data = {}
+	if (num_earthquakes != 0):
+		data['num_earthquakes'] = num_earthquakes
+		data['avg_magnitude'] = avg_magnitude / num_earthquakes
+		data['avg_depth'] = avg_depth / num_earthquakes
+		data['highest_magnitude'] = highest_magnitude
+		data['lowest_magnitude'] = lowest_magnitude
+	else:
+		data['num_earthquakes'] = 0
+		data['avg_magnitude'] = 0
+		data['avg_depth'] = 0
+		data['highest_magnitude'] = 0
+		data['lowest_magnitude'] = 0
 	
-# 	return data
+	return data
 
 
 # Create flask app
@@ -132,6 +130,7 @@ def api_microservice():
 	city = data["city"]
 	province = data["region"]
 	country = data["country"]
+	extended = data["extended"]
 
 	# get the lat and long
 	lat_long = get_lat_long(city, province, country)
@@ -141,8 +140,10 @@ def api_microservice():
 	quake_prediction = quake_model.predict(lat_long_ml_input)[0]
 	# get earthquake stats
 	print(quake_prediction)
-	# recv_data = get_earthquake_stats(lat_long['lat'], lat_long['lng'], round(quake_prediction))
+	
 	recv_data = {}
+	if extended == True:
+		recv_data = get_earthquake_stats(lat_long['lat'], lat_long['lng'], round(quake_prediction))
 	# return the data
 	recv_data['predicted_magnitude'] = round(quake_prediction)
 	recv_data['lng'] = lat_long['lng']
