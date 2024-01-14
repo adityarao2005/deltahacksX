@@ -5,7 +5,7 @@ import Link from "next/link";
 function LinkButton(props: React.PropsWithChildren<{ href: string }>) {
 	return (
 		<Link href={props.href}>
-			<div className='rounded-lg bg-gray-400 py-2 px-4'>
+			<div className='rounded-lg bg-[#030712] py-2 px-4'>
 				{props.children}
 			</div>
 		</Link>
@@ -13,22 +13,21 @@ function LinkButton(props: React.PropsWithChildren<{ href: string }>) {
 }
 
 export default function Home() {
+	
 	return (
-		<div className='flex-1 flex flex-col bg-gradient-to-b from-cyan-500 to-blue-500'>
+		<div className="flex-1 flex flex-col bg-[url('/quake-2.jpg')]">
 			<div className='flex-1'></div>
 			<div className='mx-auto text-center '>
 				{/* Typing animation here */}
-				<div className='text-4xl font-bold text-white p-5'>
+				<div className='text-8xl font-bold text-white p-5'>
 					<TypingAnimation
 						data={[
 							"Chile",
 							"Spain",
 							"France",
 							"Phillipines",
-							"Singapourse",
+							"Singapore",
 							"Turkey",
-							"Canada",
-							"US",
 							"Mexico",
 							"Bolivia",
 							"Venesuala",
@@ -38,14 +37,21 @@ export default function Home() {
 							"Madagascar",
 						]}
 					/>
+					
+					
 				</div>
-				<div className='flex flex-row'>
-					<div className='px-2'>
-						<LinkButton href='/about'>Learn More</LinkButton>
+				<div className='text-8xl font-bold text-white p-5'>
+					<b>needs OUR HELP.</b></div>
+				
+				<div className='flex flex-row text-white'>
+					<div className="flex-1"/>
+					<div className='px-2 text-white'>
+						<LinkButton href='/about' >Learn More</LinkButton>
 					</div>
 					<div className='px-2'>
 						<LinkButton href='/tool'>Use Tool</LinkButton>
 					</div>
+					<div className="flex-1"/>
 				</div>
 			</div>
 			<div className='flex-1'></div>
