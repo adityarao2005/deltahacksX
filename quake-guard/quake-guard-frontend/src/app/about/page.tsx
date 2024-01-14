@@ -7,22 +7,14 @@ export default function AboutPage() {
 				<div className='h-80 rounded-2xl bg-gray-400 mb-4'></div>
 				<h1 className='text-4xl font-bold text-gray-100 mb-4'>
 					Solution
-				</h1>
+				</h1 > 
+				<p className = 'text-gray-100'>QuakeGuard relies on Earthquake API's, Pandas analysis and a machine learning model to accurately tell a user what is the chances that an earthquake will occur in their area, it's strength and the expected date it will happen. Why are we different? </p>
 				<div>
 					<h1 className='text-3xl font-bold text-gray-100'>
 						AI and Machine Learning Powered
 					</h1>
 					<p className='text-gray-100'>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Eius laudantium, quos, voluptatibus, voluptas voluptatem
-						dolorum asperiores quibusdam iusto quae quia fugit.
-						Quisquam, voluptas aspernatur. Quia, quibusdam! Quaerat,
-						quos. Quod, quibusdam. Lorem ipsum dolor sit amet
-						consectetur adipisicing elit. Eius laudantium, quos,
-						voluptatibus, voluptas voluptatem dolorum asperiores
-						quibusdam iusto quae quia fugit. Quisquam, voluptas
-						aspernatur. Quia, quibusdam! Quaerat, quos. Quod,
-						quibusdam.
+						Uses AI and Machine Learning predicting earthquakes with higher accuracy, enabling timely and informed decisions by authorities and communities!
 					</p>
 				</div>
 				<div>
@@ -30,16 +22,13 @@ export default function AboutPage() {
 						Global Community & Support
 					</h1>
 					<p className='text-gray-100'>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Eius laudantium, quos, voluptatibus, voluptas voluptatem
-						dolorum asperiores quibusdam iusto quae quia fugit.
-						Quisquam, voluptas aspernatur. Quia, quibusdam! Quaerat,
-						quos. Quod, quibusdam. Lorem ipsum dolor sit amet
-						consectetur adipisicing elit. Eius laudantium, quos,
-						voluptatibus, voluptas voluptatem dolorum asperiores
-						quibusdam iusto quae quia fugit. Quisquam, voluptas
-						aspernatur. Quia, quibusdam! Quaerat, quos. Quod,
-						quibusdam.
+						Unlike traditional models, QuakeGuard involves an active amount of users to allocatively rationing resources to high-risk areas, helping the ones who most need it!
+					</p>
+					<h1 className='text-3xl font-bold text-gray-100'>
+						Hollistic Analysis
+					</h1>
+					<p className='text-gray-100'>
+						Our analysis considers langitude and latitude, depth of earthquake, date and its Richter rating from a diverse dataset providing more accurate outputs and more comprehensive summary results! 
 					</p>
 				</div>
 			</div>
@@ -49,16 +38,7 @@ export default function AboutPage() {
 						The Product
 					</h1>
 					<p className='text-gray-100'>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Eius laudantium, quos, voluptatibus, voluptas voluptatem
-						dolorum asperiores quibusdam iusto quae quia fugit.
-						Quisquam, voluptas aspernatur. Quia, quibusdam! Quaerat,
-						quos. Quod, quibusdam. Lorem ipsum dolor sit amet
-						consectetur adipisicing elit. Eius laudantium, quos,
-						voluptatibus, voluptas voluptatem dolorum asperiores
-						quibusdam iusto quae quia fugit. Quisquam, voluptas
-						aspernatur. Quia, quibusdam! Quaerat, quos. Quod,
-						quibusdam.
+						As rising condo and urban living is increasing, damages due to earthquakes keep rising. As such the need for a proactive and data driven earthquake risk prediction has never been more critical. Our initiative, QuakeGuard, harnesses ML capabilities to revolunionize earthquake risk assesment. QuakeGuard is commited in providind information to empowering authorities, conmmunities and first responders with actionable insights for resource allocation and prevention using geographical, longitudinal and langitudinal and date analysis.
 					</p>
 				</div>
 				<div className='pb-4'>
@@ -66,16 +46,7 @@ export default function AboutPage() {
 						The Inspiration
 					</h1>
 					<p className='text-gray-100'>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-						Eius laudantium, quos, voluptatibus, voluptas voluptatem
-						dolorum asperiores quibusdam iusto quae quia fugit.
-						Quisquam, voluptas aspernatur. Quia, quibusdam! Quaerat,
-						quos. Quod, quibusdam. Lorem ipsum dolor sit amet
-						consectetur adipisicing elit. Eius laudantium, quos,
-						voluptatibus, voluptas voluptatem dolorum asperiores
-						quibusdam iusto quae quia fugit. Quisquam, voluptas
-						aspernatur. Quia, quibusdam! Quaerat, quos. Quod,
-						quibusdam.
+						Our insipiration came from the devestating earthquakes that rocked Turkey recently. As environmental enthusiasts, we knew we wanted to help. We wanted to make something new and exciting that combined eleements we were familiar with like Nodejs, React and TailwindCSS and elemnts we wanted to learn more about such as ML. Our journey began trying to create an extraordinary hack that not only adresses a current problem but paves the way for a brighter future. 
 					</p>
 				</div>
 				<div className='h-80 rounded-2xl bg-gray-400'></div>

@@ -26,7 +26,7 @@ function Navbar(props: React.PropsWithChildren<{}>) {
 	return (
 		<nav className='flex flex-column p-4'>
 			
-				<img src="/logo.png" className="w-36"/>
+				<img src="/logo.png" className="w-44"/>
 			
 			<div className='flex-1'></div>
 			<div>
