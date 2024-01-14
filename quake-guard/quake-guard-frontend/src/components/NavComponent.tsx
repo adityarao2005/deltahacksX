@@ -24,10 +24,10 @@ function NavLink({
 
 function Navbar(props: React.PropsWithChildren<{}>) {
 	return (
-		<nav className='flex flex-column p-4 drop-shadow-md'>
-			<div className='font-bold drop-shadow-md'>
-				<Link href='/'>QuakeGuard</Link>
-			</div>
+		<nav className='flex flex-column p-4'>
+			
+				<img src="/logo.png" className="w-36"/>
+			
 			<div className='flex-1'></div>
 			<div>
 				<ul>{props.children}</ul>
