@@ -23,6 +23,9 @@ export default function ToolPage() {
 		avg_depth?: number;
 		highest_magnitude?: number;
 		lowest_magnitude?: number;
+		lat?: number;
+		lng?: number;
+		predicted_magnitude?: number;
 	}>({});
 
 	const submitFunction = async (e: React.FormEvent<HTMLFormElement>) => {};
@@ -75,7 +78,7 @@ export default function ToolPage() {
 						<div className='flex flex-col py-2'>
 							<button
 								type='submit'
-								className='rounded-lg bg-[#030712] text-white py-2 px-4'
+								className='rounded-lg bg-black hover:bg-gray-700 text-white py-2 px-4'
 							>
 								Submit
 							</button>
@@ -84,21 +87,82 @@ export default function ToolPage() {
 				</div>
 				<div className='p-4'></div>
 				<div className='flex-1 bg-gray-300 rounded-xl p-4'>
-					<h1 className='text-4xl font-bold py-5'>Statistics</h1>
-					<div className='grid grid-cols-2'>
-						<div className='py-4 text-2xl'>
-							Count of Previous Earthquakes in the Area:
+					<div className='py-5'>
+						<h1 className='text-4xl font-bold'>Statistics</h1>(of
+						nearby Area)
+					</div>
+					<div className='grid grid-cols-2 text-md'>
+						<div className='py-2'>
+							Count of Previous Earthquakes
 						</div>
-						<div className='flex flex-col py-4'>
-							{data ? data.count : "N/A"}
+						<div className='flex flex-col py-2'>
+							{data.num_earthquakes
+								? data.num_earthquakes
+								: "N/A"}
 						</div>
-						<div className='flex flex-col py-4'></div>
-						<div className='flex flex-col py-4'></div>
-						<div className='flex flex-col py-2'></div>
+
+						<div className='py-2'>
+							Average Magnitude of Previous Earthquakes
+						</div>
+						<div className='flex flex-col py-2'>
+							{data.avg_magnitude ? data.avg_magnitude : "N/A"}
+						</div>
+						<div className='py-2'>Average Depth</div>
+						<div className='flex flex-col py-2'>
+							{data.avg_depth ? data.avg_depth : "N/A"}
+						</div>
+
+						<div className='py-2'>Lowest Magnitude</div>
+						<div className='flex flex-col py-2'>
+							{data.lowest_magnitude
+								? data.lowest_magnitude
+								: "N/A"}
+						</div>
+
+						<div className='py-2'>Highest Magnitude</div>
+						<div className='flex flex-col py-2'>
+							{data.highest_magnitude
+								? data.highest_magnitude
+								: "N/A"}
+						</div>
+
+						<div className='py-2'>Latitude</div>
+						<div className='py-2'>
+							{data.lat ? data.lat : "N/A"}
+						</div>
+
+						<div className='py-2'>Longitude</div>
+						<div className='py-2'>
+							{data.lng ? data.lng : "N/A"}
+						</div>
 					</div>
 				</div>
 				<div className='p-4'></div>
-				<div className='flex-1 bg-gray-300 rounded-xl p-4'></div>
+				<div className='flex-1 bg-gray-300 rounded-xl p-4'>
+					<div className='py-5'>
+						<h1 className='text-4xl font-bold'>Summary</h1>
+					</div>
+					<div className='grid grid-cols-2 text-md'>
+						<div className='py-2'>Risk</div>
+						<div className='flex flex-col py-2'>
+							{data.num_earthquakes
+								? data.num_earthquakes
+								: "N/A"}
+						</div>
+
+						<div className='py-2'>Predicted Magnitude</div>
+						<div className='flex flex-col py-2'>
+							{data.avg_magnitude
+								? data.predicted_magnitude
+								: "N/A"}
+						</div>
+						<div className='py-2'>When we predict</div>
+						<div className='flex flex-col py-2'>
+							{data.avg_depth ? data.avg_depth : "N/A"}
+						</div>
+
+					</div>
+				</div>
 				<div className='flex-1'></div>
 			</div>
 			<div className='p-10'></div>
