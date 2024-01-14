@@ -24,9 +24,9 @@ function NavLink({
 
 function Navbar(props: React.PropsWithChildren<{}>) {
 	return (
-		<nav className='flex flex-column p-4'>
+		<nav className='flex flex-column p-4 ml-24'>
 			
-				<img src="/logo.png" className="w-44"/>
+				<img src="/logo.png" className="w-52"/>
 			
 			<div className='flex-1'></div>
 			<div>
@@ -38,7 +38,7 @@ function Navbar(props: React.PropsWithChildren<{}>) {
 
 export default function NavComponent() {
 	return (
-		<Navbar>
+		<Navbar classNames="">
 			<NavLink href='/'>Home</NavLink>
 			<NavLink href='/about'>About</NavLink>
 			<NavLink href='/tool'>Tool</NavLink>
