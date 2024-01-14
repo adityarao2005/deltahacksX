@@ -2,9 +2,9 @@ import React from "react";
 
 export default function AboutPage() {
 	return (
-		<div className='flex-1 grid grid-cols-2 gap-4 bg-gradient-to-b from-cyan-500 to-blue-500 py-4 px-20'>
+		<div className='flex-1 grid grid-cols-2 gap-4 bg-black'>
 			<div>
-				<div className='h-80 rounded-2xl bg-gray-400 mb-4'></div>
+				<div className='bg-cover mt-3 h-80 rounded-2xl bg-[url("/earthquake2.jpg")] mb-4'></div>
 				<h1 className='text-4xl font-bold text-gray-100 mb-4'>
 					Solution
 				</h1 > 
@@ -49,7 +49,7 @@ export default function AboutPage() {
 						Our inspiration for this project rose from the devestating earthquakes that struck Turkey recently. As environmental enthusiasts, we knew we wanted to help. Our goal was to make something new and exciting that combined elements we were familiar with such as Node.js, React and TailwindCSS, as well as elements we wanted to learn more about such as ML. And so began our journey to create an extraordinary hack that not only adresses a current problem but also paves the way for a brighter future. 
 					</p>
 				</div>
-				<div className='h-80 rounded-2xl bg-gray-400'></div>
+				<div className='bg-cover h-80 rounded-2xl bg-[url("/mockup3.jpg")] '></div>
 			</div>
 		</div>
 	);

@@ -6,33 +6,26 @@ import googlemaps
 from datetime import datetime
 import math
 # flask dependencies
-from flask import Flask, jsonify, request
-from flask_restful import Resource, Api, reqparse, abort, marshal, fields
+from flask import Flask, jsonify, request, json
+import pickle
+
+print("Starting Quake Guard Backend")
 
 # TODO: Create the Cloud in the first place
-### START CREATING ML MODEL
-# save filepath to variable for easier access
-quake_data_file = 'silver.csv'
-# read the data and store data in DataFrame titled melbourne_data
-quake_data = pd.read_csv(quake_data_file)
 
-# Create ML MODEL
-def create_model():
-	# Set y value as magnitude
-	y = quake_data.mag
-	quake_data_features = ['latitude', 'longitude']
-	X = quake_data[quake_data_features]
-	# print description or statistics from X
-	# Define model. Specify a number for random_state to ensure same results each run
-	quake_model = DecisionTreeRegressor(random_state=1)
-	# Fit model
-	quake_model.fit(X, y)
-	# FINISH CREATING ML MODEL
+# print("Read CSV")
+# save filepath to variable for easier access
+# quake_data_file = 'silver.csv'
+# read the data and store data in DataFrame titled melbourne_data
+# quake_data = pd.read_csv(quake_data_file)
 
 # creates the ml model
-quake_model = create_model()
+quake_model = pickle.load(open('finalized_model.sav', 'rb'))
+print("Created ML Model")
 # TODO: REMEMBER TO ADD KEY HERE & REMEMBER TO ENABLE Geocoding and Distance Matrix APIs
 gmaps = googlemaps.Client(key='AIzaSyC2KHwoCKJqDDMdgOs00giJA-CiT05rbYs')
+
+print("Connect to Google Maps API")
 
 # get the lat and long from the address
 def get_lat_long(city, region, country):
@@ -44,7 +37,7 @@ def get_lat_long(city, region, country):
 	if (region != ''):
 		address += ", " + region
 	if (country != ''):
-		address += + ", " + country
+		address += ", " + country
 	
 	#validate address
 	if (address == ''):
@@ -53,7 +46,17 @@ def get_lat_long(city, region, country):
 	# get the lat and long
 	geocode_result = gmaps.geocode(address)
 	# returns a dictornary with the lat and long as fields
-	return geocode_result['result']['geometry']['location']
+	return geocode_result[0]['geometry']['location']
+
+def haversine_distance(mk1, mk2):
+	R = 3958.8; # Radius of the Earth in miles
+	rlat1 = math.radians(mk1[0]) # Convert degrees to radians
+	rlat2 = math.radians(mk2[0]) # Convert degrees to radians
+	difflat = rlat2-rlat1 # Radian difference (latitudes)
+	difflon = math.radians(mk2[1]-mk1[1]) # Radian difference (longitudes)
+	d = 2 * R * math.asin(math.sqrt(math.sin(difflat/2)*math.sin(difflat/2)+math.cos(rlat1)*math.cos(rlat2)*math.sin(difflon/2)*math.sin(difflon/2)))
+	return d
+
 
 # iterate over all the rows and get these values: number of earthquakes, average magnitude, average depth, highest magnitude, lowest magnitude
 def get_earthquake_stats(address_lat, address_lng, predicted_magnitude):
@@ -75,9 +78,9 @@ def get_earthquake_stats(address_lat, address_lng, predicted_magnitude):
 		lng = row['longitude']
 
 		# get distance between the two points
-		distance = gmaps.distance_matrix((lat, lng), (address_lat, address_lng))
-		# if the distance is greater than 50km, skip
-		if (distance['rows'][0]['elements'][0]['distance']['value'] > prediction_scales[predicted_magnitude]):
+		distance = haversine_distance((float(lat), float(lng)), (float(address_lat), float(address_lng)))
+
+		if (distance > prediction_scales[predicted_magnitude]):
 			continue
 
 		# increment num earthquakes
@@ -113,33 +116,39 @@ def get_earthquake_stats(address_lat, address_lng, predicted_magnitude):
 # Create flask app
 app = Flask(__name__)
 
+print("Created Flask App")
+
 prediction_scales = { 1: 1000, 2: 1000, 3: 1000, 4: 1000, 5: 3000, 6: 10000, 7: 30000, 8: 50000, 9: 100000 }
 
 # create api route
 @app.route("/api", methods=['POST'])
 def api_microservice():
+	print("API Request Received")
 	# get the data from the POST request.
 	data = request.get_json()
 	city = data["city"]
-	province = data["province"]
+	province = data["region"]
 	country = data["country"]
 
 	# get the lat and long
 	lat_long = get_lat_long(city, province, country)
-	lat_long_ml_input = [lat_long['lat'], lat_long['lng']]    
+	lat_long_ml_input = [[lat_long['lat'], lat_long['lng']]]   
 
 	# get predicted next earthquake magnitude
-	quake_prediction = quake_model.predict(lat_long_ml_input)
+	quake_prediction = quake_model.predict(lat_long_ml_input)[0]
 	# get earthquake stats
-	data = get_earthquake_stats(lat_long['lat'], lat_long['lng'], round(quake_prediction))
-
+	print(quake_prediction)
+	# recv_data = get_earthquake_stats(lat_long['lat'], lat_long['lng'], round(quake_prediction))
+	recv_data = {}
 	# return the data
-	data['predicted_magnitude'] = round(quake_prediction)
-	data['lng'] = lat_long['lng']
-	data['lat'] = lat_long['lat']
+	recv_data['predicted_magnitude'] = round(quake_prediction)
+	recv_data['lng'] = lat_long['lng']
+	recv_data['lat'] = lat_long['lat']
 	# return json data
-	return jsonify(data)
+	return jsonify(recv_data)
 
 # run the app
 if __name__ == "__main__":
+	print("Starting Flask Server")
 	app.run(port=8000)
+	print("Flask Server Running")
