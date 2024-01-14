@@ -32,7 +32,7 @@ def create_model():
 # creates the ml model
 quake_model = create_model()
 # TODO: REMEMBER TO ADD KEY HERE & REMEMBER TO ENABLE Geocoding and Distance Matrix APIs
-gmaps = googlemaps.Client(key='Add Your Key here')
+gmaps = googlemaps.Client(key='AIzaSyC2KHwoCKJqDDMdgOs00giJA-CiT05rbYs')
 
 # get the lat and long from the address
 def get_lat_long(city, region, country):
