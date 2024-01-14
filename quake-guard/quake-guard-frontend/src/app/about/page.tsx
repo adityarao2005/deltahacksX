@@ -38,7 +38,7 @@ export default function AboutPage() {
 						The Product
 					</h1>
 					<p className='text-gray-100'>
-						As rising condo and urban living is increasing, damages due to earthquakes keep rising. As such the need for a proactive and data driven earthquake risk prediction has never been more critical. Our initiative, QuakeGuard, harnesses ML capabilities to revolunionize earthquake risk assesment. QuakeGuard is commited in providind information to empowering authorities, conmmunities and first responders with actionable insights for resource allocation and prevention using geographical, longitudinal and langitudinal and date analysis.
+						As rising condo and urban living is increasing, dangers due to earthquakes continue to rise. As such the need for a proactive and data driven earthquake risk prediction has never been more critical. Our initiative, QuakeGuard, harnesses ML capabilities to revolunionize earthquake risk assesment. QuakeGuard is commited in providin information to empowering authorities, conmmunities and first responders with actionable insights for resource allocation and prevention by geographical, longitudinal and latitudinal analysis.  
 					</p>
 				</div>
 				<div className='pb-4'>
@@ -46,7 +46,7 @@ export default function AboutPage() {
 						The Inspiration
 					</h1>
 					<p className='text-gray-100'>
-						Our insipiration came from the devestating earthquakes that rocked Turkey recently. As environmental enthusiasts, we knew we wanted to help. We wanted to make something new and exciting that combined eleements we were familiar with like Nodejs, React and TailwindCSS and elemnts we wanted to learn more about such as ML. Our journey began trying to create an extraordinary hack that not only adresses a current problem but paves the way for a brighter future. 
+						Our insipiration for this project rose from the devestating earthquakes that struck Turkey recently. As environmental enthusiasts, we knew we wanted to help. Our goal was to make something new and exciting that combined elements we were familiar with such as Node.js, React and TailwindCSS, as well as elements we wanted to learn more about such as ML. And so began our journey to create an extraordinary hack that not only adresses a current problem but also paves the way for a brighter future. 
 					</p>
 				</div>
 				<div className='h-80 rounded-2xl bg-gray-400'></div>
