@@ -135,6 +135,8 @@ def api_microservice():
 
 	# return the data
 	data['predicted_magnitude'] = round(quake_prediction)
+	data['lng'] = lat_long['lng']
+	data['lat'] = lat_long['lat']
 	# return json data
 	return jsonify(data)
 
