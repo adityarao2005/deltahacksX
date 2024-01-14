@@ -102,11 +102,12 @@ export default function ToolPage() {
 	};
 
 	return (
-		<div className='flex-1 flex flex-col'>
+	<div className='flex-1 grid gap-4 bg-[url("/mountains.jpg")]'>
+		<div className= "flex-1 flex flex-col">
 			<div className='p-10'></div>
 			<div className='flex-1 flex flex-row'>
-				<div className='flex-1'></div>
-				<div className='flex-1 bg-gray-300 rounded-xl p-4'>
+			<div className="flex-1"></div>
+				<div className= "flex-1 rounded-xl p-4 shadow-2xl backdrop-blur-sm bg-white/30 ...">
 					<h1 className='text-4xl font-bold py-5'>Location</h1>
 					<form className='flex flex-col' onSubmit={submitFunction}>
 						<div className='flex flex-col py-4'>
@@ -157,7 +158,7 @@ export default function ToolPage() {
 					</form>
 				</div>
 				<div className='p-4'></div>
-				<div className='flex-1 bg-gray-300 rounded-xl p-4'>
+				<div className= "flex-1 rounded-xl p-4 shadow-2xl backdrop-blur-sm bg-white/30 ...">
 					<div className='py-5'>
 						<h1 className='text-4xl font-bold'>Statistics</h1>(of
 						nearby Area)
@@ -209,7 +210,7 @@ export default function ToolPage() {
 					</div>
 				</div>
 				<div className='p-4'></div>
-				<div className='flex-1 bg-gray-300 rounded-xl p-4'>
+				<div className= "flex-1 rounded-xl p-4 shadow-2xl backdrop-blur-sm bg-white/30 ...">
 					<div className='py-5'>
 						<h1 className='text-4xl font-bold'>Summary</h1>
 					</div>
@@ -236,6 +237,7 @@ export default function ToolPage() {
 				<div className='flex-1'></div>
 			</div>
 			<div className='p-10'></div>
+		</div>
 		</div>
 	);
 }
