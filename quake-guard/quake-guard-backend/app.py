@@ -1,6 +1,5 @@
 # Machine learning dependencies
 import pandas as pd
-from sklearn.tree import DecisionTreeRegressor
 # google maps dependencies
 import googlemaps
 from datetime import datetime
