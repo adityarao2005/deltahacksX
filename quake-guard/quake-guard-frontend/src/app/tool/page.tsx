@@ -1,6 +1,9 @@
 "use client";
 import React, { useState } from "react";
+import LineChart  from "@/components/Chart";
 
+
+  
 // States
 enum LoadingState {
 	UNLOADED,
@@ -237,61 +240,10 @@ export default function ToolPage() {
 					<div className='p-4'></div>
 					<div className='flex-1 rounded-xl p-4 shadow-2xl backdrop-blur-sm bg-white/30 z-10'>
 						<div className='py-5'>
-							<h1 className='text-4xl font-bold'>Statistics</h1>
-							(of nearby Area)
+							<h1 className='text-3xl font-bold'>Chart Summary</h1>
+							<LineChart />
 						</div>
-						<div className='grid grid-cols-2 text-md'>
-							<div className='py-2'>
-								Count of Previous Earthquakes
-							</div>
-							<div className='flex flex-col py-2'>
-								{data.num_earthquakes
-									? data.num_earthquakes
-									: "N/A"}
-							</div>
-
-							<div className='py-2'>
-								Average Magnitude of Previous Earthquakes
-							</div>
-							<div className='flex flex-col py-2'>
-								{data.avg_magnitude
-									? Math.round(data.avg_magnitude * 100) / 100
-									: "N/A"}
-							</div>
-							<div className='py-2'>Average Depth</div>
-							<div className='flex flex-col py-2'>
-								{data.avg_depth ? data.avg_depth : "N/A"}
-							</div>
-
-							<div className='py-2'>Lowest Magnitude</div>
-							<div className='flex flex-col py-2'>
-								{data.lowest_magnitude
-									? Math.round(data.lowest_magnitude * 100) /
-									  100
-									: "N/A"}
-							</div>
-
-							<div className='py-2'>Highest Magnitude</div>
-							<div className='flex flex-col py-2'>
-								{data.highest_magnitude
-									? Math.round(data.highest_magnitude * 100) /
-									  100
-									: "N/A"}
-							</div>
-
-							<div className='py-2'>Latitude</div>
-							<div className='py-2'>
-								{data.lat
-									? Math.round(data.lat * 1000000) / 1000000
-									: "N/A"}
-							</div>
-
-							<div className='py-2'>Longitude</div>
-							<div className='py-2'>
-								{data.lng
-									? Math.round(data.lng * 1000000) / 1000000 : "N/A"}
-							</div>
-						</div>
+						
 					</div>
 					<div className='p-4'></div>
 					<div className='flex-1 rounded-xl p-4 shadow-2xl backdrop-blur-sm bg-white/30 z-10'>

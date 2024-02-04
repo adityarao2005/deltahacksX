@@ -38,11 +38,12 @@ function Navbar(props: React.PropsWithChildren<{}>) {
 
 export default function NavComponent() {
 	return (
-		<Navbar classNames="">
+		<Navbar>
 			<NavLink href='/'>Home</NavLink>
 			<NavLink href='/about'>About</NavLink>
 			<NavLink href='/tool'>Tool</NavLink>
 			<NavLink href='/donate'>Donate</NavLink>
+			<NavLink href='/login'>Login</NavLink>
 		</Navbar>
 	);
 }
