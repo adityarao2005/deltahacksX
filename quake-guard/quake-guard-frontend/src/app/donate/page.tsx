@@ -60,7 +60,7 @@ export default function DonatePage() {
               </div>
               <div className='flex flex-col py-4'>
                 <label htmlFor='password' className='p-2'>
-                  Password
+                  Agency
                 </label>
                 <input
                   type='password'
