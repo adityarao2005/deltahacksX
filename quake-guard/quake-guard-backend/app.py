@@ -2,24 +2,30 @@
 import pandas as pd
 # google maps dependencies
 import googlemaps
-from datetime import datetime
+import datetime
+import time
 import math
 # flask dependencies
-from flask import Flask, jsonify, request, json
+from flask import Flask, jsonify, request, json, render_template
 from flask_cors import CORS
-
-import pickle
+import tensorflow as tf
+# plot the values for data visualization
+#----------------------------------------
+from mpl_toolkits.basemap import Basemap
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 
 print("Starting Quake Guard Backend")
 
 print("Read CSV")
 # save filepath to variable for easier access
-quake_data_file = 'silver.csv'
+quake_data_file = 'final_data.csv'
 # read the data and store data in DataFrame titled melbourne_data
 quake_data = pd.read_csv(quake_data_file)
 
 # creates the ml model
-quake_model = pickle.load(open('finalized_model.sav', 'rb'))
+quake_model = tf.keras.models.load_model('neural_network.tf')
 print("Created ML Model")
 # TODO: REMEMBER TO ADD KEY HERE & REMEMBER TO ENABLE Geocoding and Distance Matrix APIs
 gmaps = googlemaps.Client(key='AIzaSyC2KHwoCKJqDDMdgOs00giJA-CiT05rbYs')
@@ -47,69 +53,23 @@ def get_lat_long(city, region, country):
 	# returns a dictornary with the lat and long as fields
 	return geocode_result[0]['geometry']['location']
 
-def haversine_distance(mk1, mk2):
-	R = 3958.8; # Radius of the Earth in miles
-	rlat1 = math.radians(mk1[0]) # Convert degrees to radians
-	rlat2 = math.radians(mk2[0]) # Convert degrees to radians
-	difflat = rlat2-rlat1 # Radian difference (latitudes)
-	difflon = math.radians(mk2[1]-mk1[1]) # Radian difference (longitudes)
-	d = 2 * R * math.asin(math.sqrt(math.sin(difflat/2)*math.sin(difflat/2)+math.cos(rlat1)*math.cos(rlat2)*math.sin(difflon/2)*math.sin(difflon/2)))
-	return d
+def matplot_data(final_data):
+	m = Basemap(projection='mill',llcrnrlat=-80,urcrnrlat=80, llcrnrlon=-180,urcrnrlon=180,lat_ts=20,resolution='c')
 
-
-# iterate over all the rows and get these values: number of earthquakes, average magnitude, average depth, highest magnitude, lowest magnitude
-def get_earthquake_stats(address_lat, address_lng, predicted_magnitude):
-	# init num earthquakes
-	num_earthquakes = 0
-	# init average magnitude
-	avg_magnitude = 0
-	# init average depth
-	avg_depth = 0
-	# init highest magnitude
-	highest_magnitude = 0
-	# init lowest magnitude
-	lowest_magnitude = 100000
-
-	# iterate over all the rows
-	for index, row in quake_data.iterrows():
-		# get latitude and longitude 
-		lat = row['latitude']
-		lng = row['longitude']
-
-		# get distance between the two points
-		distance = haversine_distance((float(lat), float(lng)), (float(address_lat), float(address_lng)))
-
-		if (distance > prediction_scales[predicted_magnitude]):
-			continue
-
-		# increment num earthquakes
-		num_earthquakes += 1
-		# add magnitude to avg magnitude
-		avg_magnitude += row['mag']
-		# add depth to avg depth
-		avg_depth += row['depth']
-		# check if highest magnitude
-		if (row['mag'] > highest_magnitude):
-			highest_magnitude = row['mag']
-		# check if lowest magnitude
-		if (row['mag'] < lowest_magnitude):
-			lowest_magnitude = row['mag']
-	
-	data = {}
-	if (num_earthquakes != 0):
-		data['num_earthquakes'] = num_earthquakes
-		data['avg_magnitude'] = avg_magnitude / num_earthquakes
-		data['avg_depth'] = avg_depth / num_earthquakes
-		data['highest_magnitude'] = highest_magnitude
-		data['lowest_magnitude'] = lowest_magnitude
-	else:
-		data['num_earthquakes'] = 0
-		data['avg_magnitude'] = 0
-		data['avg_depth'] = 0
-		data['highest_magnitude'] = 0
-		data['lowest_magnitude'] = 0
-	
-	return data
+	longitudes = final_data["longitude"].tolist()
+	latitudes = final_data["latitude"].tolist()
+	#m = Basemap(width=12000000,height=9000000,projection='lcc', resolution=None,lat_1=80.,lat_2=55,lat_0=80,lon_0=-107.)
+	x,y = m(longitudes,latitudes)
+	fig = plt.figure(figsize=(12,10))
+	plt.title("All affected areas")
+	m.plot(x, y, "o", markersize = 2, color = 'blue')
+	m.drawcoastlines()
+	m.fillcontinents(color='coral',lake_color='aqua')
+	m.drawmapboundary()
+	m.drawcountries()
+	figdata = BytesIO()
+	fig.savefig(figdata, format='png')
+	return figdata
 
 
 # Create flask app
@@ -118,37 +78,71 @@ CORS(app)
 
 print("Created Flask App")
 
-prediction_scales = { 1: 1000, 2: 1000, 3: 1000, 4: 1000, 5: 3000, 6: 10000, 7: 30000, 8: 50000, 9: 100000 }
-
 # create api route
-@app.route("/api", methods=['POST'])
-def api_microservice():
+@app.route("/api/predict_place", methods=['POST'])
+def api_predict_place():
 	print("API Request Received")
 	# get the data from the POST request.
 	data = request.get_json()
 	city = data["city"]
 	province = data["region"]
 	country = data["country"]
-	extended = data["extended"]
+	extended = data["span"]
 
+	# span should be in terms of days
+	span = 0
+	if (extended == "week"):
+		span = 7
+	if (extended == "2 weeks"):
+		span = 7
+	elif (extended == "1 month"):
+		span = 30
+	elif (extended == "2 months"):
+		span = 60
+	elif (extended == "1 year"):
+		span = 365
 	# get the lat and long
 	lat_long = get_lat_long(city, province, country)
-	lat_long_ml_input = [[lat_long['lat'], lat_long['lng']]]   
+	timestamps = []
+	lat_long_ml_input = []
+	_time = datetime.datetime.now()
+	for i in range(1, span + 1):
+		# get the lat and long for the next 7 days
+		new_time = _time + datetime.timedelta(days=i)
+		timestamp = time.mktime(new_time.timetuple())
+		timestamps.append(timestamp)
+		lat_long_ml_input.append([lat_long['lat'], lat_long['lng'], timestamp])
 
 	# get predicted next earthquake magnitude
-	quake_prediction = quake_model.predict(lat_long_ml_input)[0]
-	# get earthquake stats
-	print(quake_prediction)
+	prediction = quake_model.predict(lat_long_ml_input)
 	
 	recv_data = {}
-	if extended == True:
-		recv_data = get_earthquake_stats(lat_long['lat'], lat_long['lng'], round(quake_prediction))
+	print(prediction)
 	# return the data
-	recv_data['predicted_magnitude'] = round(quake_prediction)
+	recv_data['predicted_magnitudes'] = prediction[:, 0].tolist()
+	recv_data['predicted_depths'] = prediction[:, 1].tolist()
+	recv_data['timestamps'] = timestamps
 	recv_data['lng'] = lat_long['lng']
 	recv_data['lat'] = lat_long['lat']
 	# return json data
 	return jsonify(recv_data)
+
+@app.route("/api/generate_map", methods=['POST'])
+def api_generate_map():
+	data = request.get_json()
+	mag = int(data["mag"])
+	year = int(data["year"])
+
+	new_data = quake_data[quake_data['mag'] > int(mag)]
+	final_data = new_data[new_data['timestamp'] > time.mktime(datetime.datetime.strptime(str(year), "%Y").timetuple())]
+	figdata = matplot_data(final_data)
+
+	# Convert BytesIO to base64 string
+	figdata_base64 = base64.b64encode(figdata.getvalue()).decode('utf-8')
+	return jsonify({'fig': figdata_base64})
+
+
+
 
 # run the app
 if __name__ == "__main__":
