@@ -44,9 +44,9 @@ export default function GraphPage() {
 	useEffect(callback, [])
 
 	return (
-		<div className='flex flex-row flex-1'>
+		<div className="flex flex-row bg-[url('/mountains.jpg')]">
 			<div className='basis-1/6'></div>
-			<div className='basis-2/3 flex flex-col'>
+			<div className='basis-2/3 flex flex-col shadow-2xl backdrop-blur-md rounded-lg bg-white/30 m-20 p-6'>
 				<h1 className='text-4xl font-bold py-5 text-center'>
 					Previous Earthquake Locations
 				</h1>
@@ -89,14 +89,21 @@ export default function GraphPage() {
 							</div>
 						</div>
 						<div className='flex flex-row justify-center'>
-							<button onClick={callback} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5'>
+							<button
+								onClick={callback}
+								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5'
+							>
 								Search
 							</button>
 						</div>
 					</div>
 				</div>
 				<div className='flex-1 h-[600px] mx-auto'>
-					<img src={"data:image/png;base64," + img} className="flex-1 w-auto h-[600px] object-center" alt='Map' />
+					<img
+						src={"data:image/png;base64," + img}
+						className='flex-1 w-auto h-[600px] object-center'
+						alt='Map'
+					/>
 				</div>
 			</div>
 			<div className='basis-1/6'></div>

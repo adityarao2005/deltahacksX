@@ -10,10 +10,6 @@ enum LoadingState {
 }
 const PickTwoScreen: React.FC = () => {
 
-	const handleGoToMapClick = () => {
-		window.location.href = "/tool/graph";
-	};
-
 	return (
 		<div className="flex flex-col items-center justify-center h-screen bg-[url('/mountains.jpg')]">
 			<div className='flex-1 flex'>
