@@ -10,26 +10,27 @@ enum LoadingState {
 }
 
 // Components
-export default function ToolPage() {
+export default function PredictPage() {
 	// City, State, Country
-	const [city, setCity] = useState("");
-	const [state, setState] = useState("");
-	const [country, setCountry] = useState("");
+	const [location, setLocation] = useState("");
 	const [timespan, setTimespan] = useState("1 week");
+    const [magnitudeData, setMagnitudeData] = useState<{x:any, y:any}[]>([]);
+    const [depthData, setDepthData] = useState<{ x: any; y: any }[]>([]);
 
-	
 	const callback = () => {
 		// Validate input
-		if (city == "" || state == "" || country == "") {
-			alert("Please enter a place City, State, and Country must be filled out");
+		if (location == "") {
+			alert(
+				"Please enter a place City, State, and Country must be filled out"
+			);
 			return;
 		}
 
-		
-
-		fetch("http://localhost:8000/api/generate_map", {
+		fetch("http://localhost:8000/api/predict_place", {
 			method: "POST",
 			body: JSON.stringify({
+				location: location,
+				span: timespan,
 			}),
 			headers: {
 				"Content-Type": "application/json",
@@ -38,19 +39,47 @@ export default function ToolPage() {
 		})
 			.then((res) => res.json())
 			.then((res) => {
-			});
+                let lat = res.lat;
+                let lng = res.lng;
+                let predicted_depths = res.predicted_depths;
+                let predicted_magnitudes = res.predicted_magnitudes;
+                let timestamps = res.timestamps;
+
+                let depthData : {x:any, y:any}[] = [];
+                let magnitudeData: { x: any; y: any }[] = [];
+
+                for (let i = 0; i < predicted_depths.length; i++) {
+                    let date = new Date(timestamps[i] * 1000);
+                    depthData.push({
+                        x: date.toISOString(),
+                        y: predicted_depths[i]
+                    });
+                    magnitudeData.push({
+						x: date.toISOString(),
+						y: predicted_magnitudes[i],
+					});
+                }
+
+                setDepthData(depthData);
+                setMagnitudeData(magnitudeData);
+            });
 	};
 
 	// Loading state
 	const [loadState, setLoadState] = useState(LoadingState.UNLOADED);
-	const submitFunction = () => {};
+	const submitFunction = (e : React.FormEvent) => {
+        callback();
+        e.preventDefault();
+
+    };
 
 	// Example data for Line Chart 1 (Temperature)
 	const depth_data = {
 		datasets: [
 			{
 				label: "Depth Data",
-				data: [
+				data: depthData
+                /* [
 					{
 						x: "2021-11-06 23:39:30",
 						y: 12,
@@ -63,7 +92,7 @@ export default function ToolPage() {
 						x: "2021-11-07 09:00:28",
 						y: 30,
 					},
-				],
+				]*/,
 				borderColor: "rgb(255, 99, 132)",
 				backgroundColor: "rgba(255, 99, 132, 0.5)",
 			},
@@ -73,20 +102,7 @@ export default function ToolPage() {
 		datasets: [
 			{
 				label: "Magnitude Data",
-				data: [
-					{
-						x: "2021-11-06 23:39:30",
-						y: 8,
-					},
-					{
-						x: "2021-11-07 01:00:28",
-						y: 9,
-					},
-					{
-						x: "2021-11-07 09:00:28",
-						y: 5,
-					},
-				],
+				data: magnitudeData,
 				borderColor: "rgb(15, 40, 244)",
 				backgroundColor: "rgba(255, 99, 132, 0.5)",
 			},
@@ -155,40 +171,14 @@ export default function ToolPage() {
 							onSubmit={submitFunction}
 						>
 							<div className='flex flex-col py-3'>
-								<label htmlFor='city'>City</label>
+								<label htmlFor='location'>Location</label>
 								<input
 									type='text'
-									name='city'
-									id='city'
+									name='location'
+									id='location'
 									className='rounded p-2'
-									value={city}
-									onChange={(e) => setCity(e.target.value)}
-								/>
-							</div>
-							<div className='flex flex-col py-3'>
-								<label htmlFor='state' className='py-2'>
-									State
-								</label>
-								<input
-									type='text'
-									name='state'
-									id='state'
-									className='rounded p-2'
-									value={state}
-									onChange={(e) => setState(e.target.value)}
-								/>
-							</div>
-							<div className='flex flex-col py-3'>
-								<label htmlFor='country' className='py-2'>
-									Country
-								</label>
-								<input
-									type='text'
-									name='country'
-									id='country'
-									className='rounded p-2'
-									value={country}
-									onChange={(e) => setCountry(e.target.value)}
+									value={location}
+									onChange={(e) => setLocation(e.target.value)}
 								/>
 							</div>
 							<div className='flex flex-col py-3'>
@@ -200,7 +190,9 @@ export default function ToolPage() {
 									id='country'
 									className='rounded py-2 '
 									value={timespan}
-									onChange={(e) => setTimespan(e.target.value)}
+									onChange={(e) =>
+										setTimespan(e.target.value)
+									}
 								>
 									<option value='1 week'>1 week</option>
 									<option value='2 weeks'>2 weeks</option>

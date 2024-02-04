@@ -33,23 +33,13 @@ gmaps = googlemaps.Client(key='AIzaSyC2KHwoCKJqDDMdgOs00giJA-CiT05rbYs')
 print("Connect to Google Maps API")
 
 # get the lat and long from the address
-def get_lat_long(city, region, country):
+def get_lat_long(location):
 	# Geocoding an address
-	address = ''
-	# get the address and validate
-	if (city != ''):
-		address += city
-	if (region != ''):
-		address += ", " + region
-	if (country != ''):
-		address += ", " + country
-	
-	#validate address
-	if (address == ''):
+	if (location == ''):
 		return "{error: 'No address provided'}", 400
 
 	# get the lat and long
-	geocode_result = gmaps.geocode(address)
+	geocode_result = gmaps.geocode(location)
 	# returns a dictornary with the lat and long as fields
 	return geocode_result[0]['geometry']['location']
 
@@ -84,14 +74,12 @@ def api_predict_place():
 	print("API Request Received")
 	# get the data from the POST request.
 	data = request.get_json()
-	city = data["city"]
-	province = data["region"]
-	country = data["country"]
+	location = data["location"]
 	extended = data["span"]
 
 	# span should be in terms of days
 	span = 0
-	if (extended == "week"):
+	if (extended == "1 week"):
 		span = 7
 	if (extended == "2 weeks"):
 		span = 7
@@ -102,7 +90,7 @@ def api_predict_place():
 	elif (extended == "1 year"):
 		span = 365
 	# get the lat and long
-	lat_long = get_lat_long(city, province, country)
+	lat_long = get_lat_long(location)
 	timestamps = []
 	lat_long_ml_input = []
 	_time = datetime.datetime.now()

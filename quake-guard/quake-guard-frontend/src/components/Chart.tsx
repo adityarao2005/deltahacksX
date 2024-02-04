@@ -1,50 +1,71 @@
-import React from 'react';
-import Chart from "chart.js/auto"
-import {CategoryScale} from "chart.js"
-import { Line } from 'react-chartjs-2';
+import React from "react";
+import "chartjs-adapter-moment";
+import {
+	Chart as ChartJS,
+	TimeScale,
+	LinearScale,
+	PointElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
 
-Chart.register(CategoryScale)
+ChartJS.register(
+	TimeScale,
+	LinearScale,
+	PointElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend
+);
 
-const generateRandomData = () => {
-  return Array.from({ length: 7 }, () => Math.floor(Math.random() * 10) + 1);
+export const options = {
+	scales: {
+		x: {
+			type: "time",
+			time: {
+				displayFormats: {
+					quarter: "MMM YYYY",
+				},
+			},
+		},
+	},
 };
 
-const LineChart = () => {
-  // Example data for Line Chart 1 (Temperature)
-  const chartData1 = {
-    labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
-    datasets: [
-      {
-        label: 'Temperature',
-        data: generateRandomData(),
-        fill: false,
-        borderColor: 'rgba(75,192,192,1)',
-      },
-    ],
-  };
+export function LineChart(props: {
+	magnitudeData: {
+		datasets: {
+			label: string;
+			data: {
+				x: string;
+				y: number;
+			}[];
+			borderColor: string;
+			backgroundColor: string;
+		}[];
+	};
+	depthData: {
+		datasets: {
+			label: string;
+			data: {
+				x: string;
+				y: number;
+			}[];
+			borderColor: string;
+			backgroundColor: string;
+		}[];
+	};
+}) {
+	return (
+		<div>
+			<h2 className='text-1xl font-semibold py-4'>Magnitude vs Time</h2>
+			<Line options={options} data={props.magnitudeData} />
 
-  // Example data for Line Chart 2 (Sales)
-  const chartData2 = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-    datasets: [
-      {
-        label: 'Sales',
-        data: generateRandomData(),
-        fill: false,
-        borderColor: 'rgba(255,99,132,1)',
-      },
-    ],
-  };
-
-  return (
-    <div>
-      <h2 className='text-1xl font-semibold py-4'>Magnitude</h2>
-      <Line data={chartData1} />
-
-      <h2 className='text-1xl font-semibold py-4 mt-8'>Depth</h2>
-      <Line data={chartData2} />
-    </div>
-  );
-};
-
-export default LineChart;
+			<h2 className='text-1xl font-semibold py-4 mt-8'>Depth vs Time</h2>
+			<Line options={options} data={props.depthData} />
+		</div>
+	);
+}
