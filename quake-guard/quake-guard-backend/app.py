@@ -8,7 +8,7 @@ import math
 # flask dependencies
 from flask import Flask, jsonify, request, json, render_template
 from flask_cors import CORS
-import tensorflow as tf
+import pickle
 # plot the values for data visualization
 #----------------------------------------
 from mpl_toolkits.basemap import Basemap
@@ -25,7 +25,7 @@ quake_data_file = 'final_data.csv'
 quake_data = pd.read_csv(quake_data_file)
 
 # creates the ml model
-quake_model = tf.keras.models.load_model('neural_network.tf')
+quake_model = pickle.load('randomforest_regressor.pkl', 'rb')
 print("Created ML Model")
 # TODO: REMEMBER TO ADD KEY HERE & REMEMBER TO ENABLE Geocoding and Distance Matrix APIs
 gmaps = googlemaps.Client(key='AIzaSyC2KHwoCKJqDDMdgOs00giJA-CiT05rbYs')
