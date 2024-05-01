@@ -61,7 +61,7 @@ export function LineChart(props: {
 }) {
 	return (
 		<div>
-			<h2 className='text-1xl font-semibold py-4'>Percent Chance vs Time</h2>
+			<h2 className='text-1xl font-semibold py-4'>Magnitude vs Time</h2>
 			<Line options={options} data={props.magnitudeData} />
 
 			<h2 className='text-1xl font-semibold py-4 mt-8'>Depth vs Time</h2>

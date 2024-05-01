@@ -36,18 +36,12 @@ const firebaseConfig = {
           organizationName,
           organizationRegion,
           email,
-          password,
         });
   
         // Handle successful signup, you can redirect or perform additional actions here
       } catch (error) {
         // Handle signup error
-        if (error === 'auth/email-already-in-use') {
-          console.error('Email is already in use. Please use a different email.');
-          // You may want to display an error message to the user
-        } else {
-          console.error('Signup Error:', error);
-        }
+        console.error('Signup Error:', error);
       }
     };
 

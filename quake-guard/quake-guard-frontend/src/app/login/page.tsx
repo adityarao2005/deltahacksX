@@ -21,43 +21,31 @@ const db = getFirestore(app);
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [success, setSuccess] = useState(false);
 
   const handleLogin = async () => {
-    
     try {
       // Step 1: Authenticate user with email and password
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      
+
       // Step 2: Perform additional checks against your database
       const userDocRef = collection(db, 'users'); // Replace 'users' with your collection name
+      console.log(email);
 
-        const querySnapshot = await getDocs(query(userDocRef));
-        
-        let found = false;
+      try {
+        const querySnapshot = await getDocs(query(userDocRef, where('Email', '==', email)));
+
+        if (querySnapshot.empty) {
+          // User not found in the database
+          console.error('User not found in the database.');
+          return;
+        }
 
         // Continue with your logic for handling the user data from the querySnapshot
         querySnapshot.forEach((doc) => {
-
-          if (found){
-            return;
-          }
-          console.log("k")
           const userData = doc.data();
-          // Check if the email from the login page matches the email in the database
-          console.log(userData);
-          if (userData.email.toLowerCase() === email.toLowerCase()) {
-            console.log('Success!');
-            found = true;
-          } else {
-            console.error('Email does not match the database.');
-          }
+          // Do something with userData
         });
-
-        setSuccess(found);
-        alert("Success! You've logged in! Your donation balance is $0 as of right now");
-        window.location.href = "/";
 
       } catch (error) {
         console.error('Error querying the database:', error);
@@ -67,9 +55,15 @@ const LoginPage = () => {
       // For example, you can access user data using querySnapshot.docs[0].data()
       // ...
 
+      // Handle successful login, you can redirect or perform additional actions here
+    } catch (error) {
+      // Handle login error
+      console.error('Login Error:', error);
+    }
   };
 
-    return (<div className="flex flex-col items-center justify-center min-h-screen bg-[url('/quake3.jpeg')]">
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[url('/quake3.jpeg')]">
       <div className='bg-gray-300 rounded-xl p-8 w-96 text-center shadow-2xl backdrop-blur-md bg-white/30'>
         <h1 className='text-4xl font-bold mb-8 text-[#030712]'>
           Relief Agency Login
@@ -111,7 +105,8 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-    </div>);
+    </div>
+  );
 };
 
 export default LoginPage;
